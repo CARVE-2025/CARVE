@@ -10,14 +10,24 @@ results in our paper.
 
 ---
 
-## Dataset
-* FFMPeg+Qemu: https://drive.google.com/file/d/1x6hoF7G-tSYxg8AFybggypLZgMGDNHfF
-* BigVul: <https://drive.google.com/file/d/1-0VhnHBp9IGh90s2wCNjeCMuy70HPl8X/view?usp=sharing>
-* DiverseVul: <https://drive.google.com/drive/folders/1BeX33sgLOWLBnJ_vjcYitzz87F1kFZWi?usp=drive_link>
+## Dataset & Dependencies
+### Core Datasets
+* **FFMPeg+Qemu**: https://drive.google.com/file/d/1x6hoF7G-tSYxg8AFybggypLZgMGDNHfF
+* **BigVul**: https://drive.google.com/file/d/1-0VhnHBp9IGh90s2wCNjeCMuy70HPl8X/view?usp=sharing
+* **DiverseVul**: https://drive.google.com/drive/folders/1BeX33sgLOWLBnJ_vjcYitzz87F1kFZWi?usp=drive_link
+
+### Joern & Pre-trained Models
+* **All Support Files**: https://drive.google.com/drive/folders/1J1UkhSKjBmarJJNY3XCABWHfzwI6puV6?usp=sharing
+  - `joern/` - Joern CLI binary and scripts
+  - `dataset/*/W2V/` - Pre-trained word2vec models for each dataset
+
 > **After download & extraction**
 > 1. **Split the code** — ensure every compilation unit is stored as an individual  
 >    `*.c` file.  
 > 2. Move these files into `dataset/<Corpus>/c/`.  
+> 3. Place `joern/` folder in project root
+> 4. Place `W2V/` folders in respective dataset directories
+
 
 ## 1 Project structure
 
