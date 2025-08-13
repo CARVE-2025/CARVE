@@ -26,9 +26,9 @@ def main():
                         help='(Optional) Path to pretrained classification checkpoint for direct testing')
     parser.add_argument('--cwe_mode', action='store_true',
                         help='If set, treat data_path as a directory of CWE .pkl files and merge them')
-    parser.add_argument('--sim_threshold', type=int, default=0.75)
-    parser.add_argument('--delt1', type=int, default=0.15)
-    parser.add_argument('--delt2', type=int, default=0.35)
+    parser.add_argument('--sim_threshold', type=int, default=0.7)
+    parser.add_argument('--delt1', type=int, default=0.2)
+    parser.add_argument('--delt2', type=int, default=0.3)
 
     args = parser.parse_args()
     rank_zero_info(vars(args))
