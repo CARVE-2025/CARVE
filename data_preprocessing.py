@@ -154,7 +154,7 @@ class DatasetBuilder:
         # Filter out sublists of length 1
         filtered_lists = [sublist for sublist in sorted_node_index_lists if len(sublist) > 1]
         filtered_lists = self.deduplicate_nested_list(filtered_lists)
-        region_line_numbers = self.line_number_extract(ast_nodes_dict, filtered_lists)  # 提取各区域的行号
+        region_line_numbers = self.line_number_extract(ast_nodes_dict, filtered_lists)  # Extract the row number of each area
 
         # Performing a Merge
         merged_regions = self.merge_regions(filtered_lists, ast_nodes_dict, adjacency_map, region_line_numbers)
@@ -375,7 +375,7 @@ class DatasetBuilder:
             merged_code = []
             last_non_empty = -2
             for entry in sorted(valid_entries, key=lambda x: x["index"]):
-                # 跳过空行但保留结构信息
+                # Skip empty lines but keep structure information
                 if entry["is_empty"]:
                     if merged_code and not merged_code[-1].endswith('\n'):
                         merged_code.append('\n')
@@ -603,35 +603,35 @@ class DatasetBuilder:
 
     def calculate_risk_score(self, node, adj_map, nodes):
         static_weights = {
-            # Ⅰ级：High-risk memory operations（0.8-1.0）
+            # Level Ⅰ：High-risk memory operations（0.8-1.0）
             'memcpy': 1.0, 'strcpy': 1.0, 'memmove': 0.9, 'sprintf': 0.9, 'strcat': 0.95,
             'strncpy': 0.85, 'vsprintf': 0.9, 'gets': 1.0, 'scanf': 0.8, 'strncat': 0.8,
 
-            # Ⅱ级：Resource management risk（0.6-0.8）
+            # Level Ⅱ：Resource management risk（0.6-0.8）
             'malloc': 0.8, 'free': 0.8, 'realloc': 0.7, 'calloc': 0.75,
             'strdup': 0.7, 'fopen': 0.6, 'fclose': 0.6, 'fdopen': 0.6, 'popen': 0.65,
 
-            # Ⅲ级：Potential vulnerability patterns（0.4-0.6）
+            # Level Ⅲ：Potential vulnerability patterns（0.4-0.6）
             'strncmp': 0.6, 'strlen': 0.6, 'atoi': 0.5, 'atol': 0.5, 'atof': 0.5,
             'getenv': 0.4, 'system': 0.8, 'sscanf': 0.5, 'access': 0.4,
 
-            # Ⅳ级：Context-sensitive structures（0.2-0.4）
+            # Level Ⅳ：Context-sensitive structures（0.2-0.4）
             'if': 0.4, 'switch': 0.4, 'for': 0.4, 'while': 0.4, 'goto': 0.4, 'sizeof': 0.4
         }
         VUL_PATTERNS = {
-            # Ⅰ级：High-risk memory operations
+            # Level Ⅰ：High-risk memory operations
             'memcpy', 'strcpy', 'memmove', 'sprintf', 'strcat', 'strncpy',
             'vsprintf', 'gets', 'scanf', 'strncat',
 
-            # Ⅱ级：Resource management risk
+            # Level Ⅱ：Resource management risk
             'malloc', 'free', 'realloc', 'calloc', 'strdup', 'fopen',
             'fclose', 'fdopen', 'popen',
 
-            # Ⅲ级：Potential vulnerability patterns
+            # Level Ⅲ：Potential vulnerability patterns
             'strncmp', 'strlen', 'atoi', 'atol', 'atof', 'getenv',
             'system', 'sscanf', 'access',
 
-            # Ⅳ级：Context-sensitive structures
+            # Level Ⅳ：Context-sensitive structures
             'if', 'switch', 'for', 'while', 'goto', 'sizeof'
         }
         code = node.get('code', '')
