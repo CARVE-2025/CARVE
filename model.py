@@ -133,18 +133,18 @@ class CrossAttentionFusion(nn.Module):
         super().__init__()
         self.dim = dim
         self.W_q = nn.Linear(dim, dim)
-        self.W_kv = nn.Linear(dim, dim * 2)  # 合并K,V生成
+        self.W_kv = nn.Linear(dim, dim * 2)  # Merge K, V to generate
 
     def forward(self, global_feat, local_feat):
-        # 投影
+        # Projection
         Q = self.W_q(global_feat)  # [B, R, D]
-        K, V = self.W_kv(local_feat).chunk(2, dim=-1)  # 拆分
+        K, V = self.W_kv(local_feat).chunk(2, dim=-1)  # Split
 
-        # 注意力计算
+        # Attention calculation
         attn = torch.matmul(Q, K.transpose(1, 2)) / (self.dim ** 0.5)
         attn = F.softmax(attn, dim=-1)
 
-        # 残差连接
+        # Residual connection
         return global_feat + torch.matmul(attn, V)  # [B, R, D]
 
 class RegionAwareModel(nn.Module):
@@ -227,7 +227,7 @@ class RegionAwareModel(nn.Module):
         global_semantic_features = self.extract_global_semantic_features(global_semantic, line_indices, batch_indices)  # [R, D]
         # print(f"global_semantic_features: {global_semantic_features.shape}")
 
-        # =================局部语义学习=================
+        # =================Local Semantic Learning=================
         local_code_emb = sample_data['code_emb']    # [R, L, D]
         local_emb_mask = sample_data['emb_mask']    # [R, L]
 
@@ -284,12 +284,12 @@ class RegionAwareModel(nn.Module):
 
     def extract_global_semantic_features(self, encoded, line_indices, batch_indices):
         """
-        新版特征提取函数
-        参数：
-        encoded: [B, L, D] 编码后的全局语义特征
-        line_indices: [R, L_num] 每个区域对应的行号索引矩阵
-        batch_indices: [R] 每个区域所属的原始批次
-        region_indices: [R] 每个区域在原始批次内的索引
+        New feature extraction function
+        Parameters:
+        encoded: [B, L, D] Encoded global semantic features
+        line_indices: [R, L_num] The row index matrix corresponding to each region
+        batch_indices: [R] The original batch to which each region belongs
+        region_indices: [R] The index of each region within the original batch
         """
         # Get the maximum valid index
         max_valid_idx = encoded.shape[1] - 1
