@@ -233,7 +233,7 @@ class ContrastiveLearner(pl.LightningModule):
 
         if not outputs:
             dummy_loss = torch.tensor(0.0, requires_grad=True)
-            dummy_loss = dummy_loss * sum(p.sum() for p in self.parameters())  # 创建与模型参数的假关联
+            dummy_loss = dummy_loss * sum(p.sum() for p in self.parameters())  # Create fake correlations with model parameters
             self.log('val_skip_batch', 1.0, sync_dist=True, batch_size=graph_data.y.size(0))
             return dummy_loss
 
